@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculos de Sombra e Circunferência da Terra</title>
+    <style>
+        html{
+            width: 100%;
+            height: 100%;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        header {
+            display: flex;
+            width: auto;
+            height: 150px;
+            margin: 0 auto;
+            background: radial-gradient(circle, #19882c, #0A5517);
+        }
+        header,[h2] {
+            color: #fff;
+            padding: 10px 10px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .result {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            font-weight: bold;
+        }
+        button {
+            margin-top: 10px;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h3>IF Sudeste MG - Campus São João del-Rei</h3>
+            <h4>Experimento Eratóstenes - Projeto de Extensão Astronomia no IF</h4>           
+        </div>
+    </header>
+    <div class="container">
+        
+        <h2>Dados da Minha Cidade</h2>
+        <div class="input-group">
+            <label for="nomeCidade1">Nome da Minha Cidade:</label>
+            <input type="text" id="nomeCidade1">
+            <button onclick="buscarCoordenadas('nomeCidade1', 'latitudeCidade1', 'longitudeCidade1')">Buscar Coordenadas</button>
+        </div>
+        <div class="input-group">
+            <label for="alturaObjeto1">Altura do gnômon da Minha Cidade (mm):</label>
+            <input type="number" id="alturaObjeto1" step="any">
+        </div>
+        <div class="input-group">
+            <label for="comprimentoSombra1">Comprimento da sombra da Minha Cidade (mm):</label>
+            <input type="number" id="comprimentoSombra1" step="any">
+        </div>
+        <div class="input-group">
+            <label for="latitudeCidade1">Latitude da Minha Cidade (graus):</label>
+            <input type="number" id="latitudeCidade1" step="any">
+        </div>
+        <div class="input-group">
+            <label for="longitudeCidade1">Longitude da Minha Cidade (graus):</label>
+            <input type="number" id="longitudeCidade1" step="any">
+        </div>
+
+        <h2>Dados da Cidade Escolhida</h2>
+        <div class="input-group">
+            <label for="nomeCidade2">Nome da Cidade Escolhida:</label>
+            <input type="text" id="nomeCidade2">
+            <button onclick="buscarCoordenadas('nomeCidade2', 'latitudeCidade2', 'longitudeCidade2')">Buscar Coordenadas</button>
+        </div>
+        <div class="input-group">
+            <label for="alturaObjeto2">Altura do gnômon da Cidade Escolhida (mm):</label>
+            <input type="number" id="alturaObjeto2" step="any">
+        </div>
+        <div class="input-group">
+            <label for="comprimentoSombra2">Comprimento da sombra da Cidade Escolhida (mm):</label>
+            <input type="number" id="comprimentoSombra2" step="any">
+        </div>
+        <div class="input-group">
+            <label for="latitudeCidade2">Latitude da Cidade Escolhida (graus):</label>
+            <input type="number" id="latitudeCidade2" step="any">
+        </div>
+        <div class="input-group">
+            <label for="longitudeCidade2">Longitude da Cidade Escolhida (graus):</label>
+            <input type="number" id="longitudeCidade2" step="any">
+        </div>
+
+        <div class="input-group">
+            <label for="distanciaEntreCidades">Distância entre as cidades (km):</label>
+            <input type="number" id="distanciaEntreCidades" step="any">
+        </div>
+
+        <button onclick="calcular()">Calcular</button>
+        <button onclick="limpar()">Limpar</button>
+
+        <div class="result">
+            <p id="resultadoHipotenusa1">Hipotenusa da Minha Cidade: </p>
+            <p id="resultadoAnguloSombra1">Ângulo da sombra da Minha Cidade: </p>
+            <p id="resultadoHipotenusa2">Hipotenusa da Cidade Escolhida: </p>
+            <p id="resultadoAnguloSombra2">Ângulo da sombra da Cidade Escolhida: </p>
+            <p id="resultadoCircunferenciaTerra">Circunferência da Terra: </p>
+            <p id="resultadoRaioTerra">Raio da Terra: </p>
+        </div>
+    </div>
+
+    <script>
+        function buscarCoordenadas(nomeCidadeId, latitudeId, longitudeId) {
+            const nomeCidade = document.getElementById(nomeCidadeId).value;
+            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(nomeCidade)}&format=json&limit=1`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const location = data[0];
+                        document.getElementById(latitudeId).value = location.lat;
+                        document.getElementById(longitudeId).value = location.lon;
+                    } else {
+                        alert('Não foi possível encontrar as coordenadas. Verifique o nome da cidade.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar coordenadas:', error);
+                    alert('Ocorreu um erro ao buscar as coordenadas.');
+                });
+        }
+
+        function calcularHipotenusa(alturaObjeto, comprimentoSombra) {
+            return Math.sqrt(Math.pow(alturaObjeto, 2) + Math.pow(comprimentoSombra, 2));
+        }
+
+        function calcularAnguloSombra(altura, comprimentoSombra) {
+            const anguloRad = Math.atan(altura / comprimentoSombra);
+            const anguloGraus = anguloRad * (180 / Math.PI);
+            return anguloGraus;
+        }
+
+        function calcularCircunferencia(distanciaEntreCidades, anguloEmGraus) {
+            return (360 / anguloEmGraus) * distanciaEntreCidades;
+        }
+
+        function calcularRaio(circunferencia) {
+            return circunferencia / (2 * Math.PI);
+        }
+
+        function calcular() {
+            const alturaObjeto1 = parseFloat(document.getElementById('alturaObjeto1').value);
+            const comprimentoSombra1 = parseFloat(document.getElementById('comprimentoSombra1').value);
+            const alturaObjeto2 = parseFloat(document.getElementById('alturaObjeto2').value);
+            const comprimentoSombra2 = parseFloat(document.getElementById('comprimentoSombra2').value);
+            const latitudeCidade1 = parseFloat(document.getElementById('latitudeCidade1').value);
+            const latitudeCidade2 = parseFloat(document.getElementById('latitudeCidade2').value);
+            const distanciaEntreCidades = parseFloat(document.getElementById('distanciaEntreCidades').value);
+
+            if (isNaN(alturaObjeto1) || isNaN(comprimentoSombra1) ||
+                isNaN(alturaObjeto2) || isNaN(comprimentoSombra2) ||
+                isNaN(latitudeCidade1) || isNaN(latitudeCidade2) ||
+                isNaN(distanciaEntreCidades)) {
+                alert('Por favor, insira valores válidos para todos os campos.');
+                return;
+            }
+
+            const hipotenusa1 = calcularHipotenusa(alturaObjeto1, comprimentoSombra1);
+            const anguloSombra1 = calcularAnguloSombra(alturaObjeto1, comprimentoSombra1);
+            
+            const hipotenusa2 = calcularHipotenusa(alturaObjeto2, comprimentoSombra2);
+            const anguloSombra2 = calcularAnguloSombra(alturaObjeto2, comprimentoSombra2);
+
+            // Diferença de latitude em graus
+            const diferencaLatitude = Math.abs(latitudeCidade2 - latitudeCidade1);
+
+            // Ângulo total em graus considerando a diferença de latitude
+            const anguloEmGraus = diferencaLatitude;
+
+            if (anguloEmGraus <= 0) {
+                alert('O ângulo ajustado é inválido. Verifique os dados e tente novamente.');
+                return;
+            }
+
+            const circunferenciaTerra = calcularCircunferencia(distanciaEntreCidades, anguloEmGraus);
+            const raioTerra = calcularRaio(circunferenciaTerra);
+
+            document.getElementById('resultadoHipotenusa1').textContent = `Hipotenusa da Minha Cidade: ${hipotenusa1.toFixed(2)} mm`;
+            document.getElementById('resultadoAnguloSombra1').textContent = `Ângulo da sombra da Minha Cidade: ${anguloSombra1.toFixed(2)} graus`;
+            document.getElementById('resultadoHipotenusa2').textContent = `Hipotenusa da Cidade Escolhida: ${hipotenusa2.toFixed(2)} mm`;
+            document.getElementById('resultadoAnguloSombra2').textContent = `Ângulo da sombra da Cidade Escolhida: ${anguloSombra2.toFixed(2)} graus`;
+            document.getElementById('resultadoCircunferenciaTerra').textContent = `Circunferência da Terra: ${circunferenciaTerra.toFixed(2)} km - Referência: 40075km`;
+            document.getElementById('resultadoRaioTerra').textContent = `Raio da Terra: ${raioTerra.toFixed(2)} km - Referência: 6371km `;
+        }
+
+        function limpar() {
+            document.getElementById('alturaObjeto1').value = '';
+            document.getElementById('comprimentoSombra1').value = '';
+            document.getElementById('alturaObjeto2').value = '';
+            document.getElementById('comprimentoSombra2').value = '';
+            document.getElementById('nomeCidade1').value = '';
+            document.getElementById('latitudeCidade1').value = '';
+            document.getElementById('longitudeCidade1').value = '';
+            document.getElementById('nomeCidade2').value = '';
+            document.getElementById('latitudeCidade2').value = '';
+            document.getElementById('longitudeCidade2').value = '';
+            document.getElementById('distanciaEntreCidades').value = '';
+
+            document.getElementById('resultadoHipotenusa1').textContent = 'Hipotenusa da Minha Cidade: ';
+            document.getElementById('resultadoAnguloSombra1').textContent = 'Ângulo da sombra da Minha Cidade: ';
+            document.getElementById('resultadoHipotenusa2').textContent = 'Hipotenusa da Cidade Escolhida: ';
+            document.getElementById('resultadoAnguloSombra2').textContent = 'Ângulo da sombra da Cidade Escolhida: ';
+            document.getElementById('resultadoCircunferenciaTerra').textContent = 'Circunferência da Terra: ';
+            document.getElementById('resultadoRaioTerra').textContent = 'Raio da Terra: ';
+        }
+    </script>
+</body>
+</html>
