@@ -1,0 +1,74 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+header {
+    display: inline-flex;
+    width: 100%;
+    height: auto;
+    background: radial-gradient(circle, #19882c, #0A5517);
+}
+header h1, header h2, header p {
+    color: #fff;
+}
+header h1 {
+    font-size: 24px;
+}
+header h2 {
+    font-size: 16px;
+}
+.container-logo {
+    margin: 24px;
+}
+.container-logo img {
+    padding-top: 18px;
+    width: 100px;
+}
+.container-titles {
+    margin: 10px;
+    padding: 10px;
+}
+section {
+    width: 100%;
+}
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 12px;
+}
+.input-group {
+    margin-bottom: 15px;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+.result {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+button {
+    margin-top: 10px;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+footer {
+    text-align: center;
+    width: 100%;
+    height: auto;
+    background: radial-gradient(circle, #19882c, #0A5517);
+}
+footer p {
+    color: #fff;;
+    padding: 10px;
+}
