@@ -7,8 +7,14 @@ header {
     display: inline-flex;
     width: 100%;
     height: auto;
-    background: radial-gradient(circle, #19882c, #0A5517);
+    background: radial-gradient(circle, #070c4e, #00000f);
 }
+/*header {
+    display: inline-flex;
+    width: 100%;
+    height: auto;
+    background: radial-gradient(circle, #19882c, #0A5517);
+}*/
 header h1, header h2, header p {
     color: #fff;
 }
@@ -22,7 +28,7 @@ header h2 {
     margin: 24px;
 }
 .container-logo img {
-    padding-top: 18px;
+    padding-top: 10px;
     width: 100px;
 }
 .container-titles {
@@ -66,9 +72,16 @@ footer {
     text-align: center;
     width: 100%;
     height: auto;
-    background: radial-gradient(circle, #19882c, #0A5517);
+    padding: 10px;
+    background: radial-gradient(circle, #070c4e, #00000f);
 }
+/*footer {
+    text-align: center;
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    background: radial-gradient(circle, #19882c, #0A5517);
+}*/
 footer p {
     color: #fff;;
-    padding: 10px;
 }
