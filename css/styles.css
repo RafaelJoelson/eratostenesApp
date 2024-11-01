@@ -5,6 +5,7 @@ body {
 }
 header {
     display: inline-flex;
+    justify-content: center;
     width: 100%;
     height: auto;
     background: radial-gradient(circle, #070c4e, #00000f);

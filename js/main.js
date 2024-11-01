@@ -30,7 +30,7 @@ function buscarCoordenadas(nomeCidadeId, latitudeId, longitudeId) {
 // Função para calcular o ângulo da sombra a partir da altura do objeto e do comprimento da sombra
 function calcularAnguloSombra(altura, comprimentoSombra) {
     // Calcula o ângulo da sombra em radianos e converte para graus
-    const anguloRad = Math.atan(altura / comprimentoSombra);
+    const anguloRad = Math.atan( comprimentoSombra / altura );
     const anguloGraus = anguloRad * (180 / Math.PI);
     return anguloGraus; // Retorna o valor do ângulo em graus
 }
@@ -45,6 +45,7 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
               Math.sin(dLon / 2) * Math.sin(dLon / 2); // Fórmula do haversine
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); // Calcula o arco entre os pontos
     const distancia = R * c; // Calcula a distância em km
+    console.log(distancia)
     return distancia;
 }
 
